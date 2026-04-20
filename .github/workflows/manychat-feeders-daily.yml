@@ -1,8 +1,35 @@
-{
-  "name": "dmprofitsystem",
-  "version": "1.0.0",
-  "main": "output/index.js",
-  "scripts": {
-    "feeders": "node output/index.js"
-  }
-}
+name: ManyChat Feeders System
+
+on:
+  push:
+  workflow_dispatch:   # ✅ THIS ADDS THE RUN BUTTON
+
+jobs:
+  generate-manychat-feeders:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Run feeders
+        run: npm run feeders
+
+      - name: Count HTML files
+        run: |
+          DIR="./output/manychat"
+          COUNT=0
+
+          if [ -d "$DIR" ]; then
+            COUNT=$(find "$DIR" -type f -name "*.html" 2>/dev/null | wc -l)
+          fi
+
+          echo "HTML files generated: $COUNT"
