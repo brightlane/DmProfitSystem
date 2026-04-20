@@ -9,27 +9,4 @@
   },
   "author": "Benny \"Palmo Kid\" Palmarino",
   "license": "MIT"
-}{
-  "name": "manychat-240k-empire",
-  "version": "1.0.0",
-  "description": "ManyChat 240K Global Empire page generator",
-  "main": "manychat-global-empire.js",
-  "scripts": {
-    "start": "node manychat-global-empire.js",
-    "deploy": "node manychat-global-empire.js"
-  },
-  "author": "Benny \"Palmo Kid\" Palmarino",
-  "license": "MIT"
-}
-{
-  "name": "manychat-240k-empire",
-  "version": "1.0.0",
-  "description": "ManyChat 240K Global Empire page generator",
-  "main": "manychat-global-empire.js",
-  "scripts": {
-    "start": "node manychat-global-empire.js",
-    "deploy": "node manychat-global-empire.js"
-  },
-  "author": "Benny \"Palmo Kid\" Palmarino",
-  "license": "MIT"
 }
