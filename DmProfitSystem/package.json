@@ -1,9 +1,11 @@
 {
-  "name": "dmprofitsystem",
+  "name": "many-chat-empire-feeders-global",
   "version": "1.0.0",
-  "main": "index.js",
+  "description": "ManyChat 240K Global Empire + TikTok/Reddit/Twitter social feeders",
+  "main": "manychat-feeders-daily.js",
   "scripts": {
-    "feeders": "node scripts/feeders.js"
+    "start": "node manychat-feeders-daily.js"
   },
-  "dependencies": {}
+  "author": "Benny \"Palmo Kid\" Palmarino",
+  "license": "MIT"
 }
