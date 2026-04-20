@@ -1,0 +1,74 @@
+name: ManyChat 240K + Social Feeders Daily
+
+on:
+  schedule:
+    # 3 AM UTC = 11 PM EDT
+    - cron: '0 3 * * *'
+  workflow_dispatch:  # manual run button in GitHub UI
+  push:
+    branches: [ main ]
+
+jobs:
+  generate-manychat-feeders:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+
+    steps:
+      - name: 🔍 Checkout repository
+        uses: actions/checkout@v4
+
+      - name: ⚙️ Setup Node.js 20
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: npm
+
+      - name: 📦 Install dependencies
+        run: npm install
+
+      - name: 🚀 Run ManyChat + Social Feeders
+        run: npm run feeders
+        env:
+          NODE_OPTIONS: --max-old-space-size=4096
+
+      - name: ✅ Verify output
+        run: |
+          echo "📁 Files in ./output"
+          ls -la ./output || true
+
+          echo "📄 HTML page count:"
+          find ./output/manychat -name "*.html" 2>/dev/null | wc -l | tr -d ' '
+
+          echo "📄 Sitemap count:"
+          find ./output -name "sitemap-*.xml" 2>/dev/null | wc -l | tr -d ' '
+
+          echo "📄 Social files:"
+          find ./output -name "social-ready-*.txt" -exec cat {} \;
+          
+          HTML_COUNT=$(find ./output/manychat -name "*.html" 2>/dev/null | wc -l || echo 0)
+          echo "✅ TOTAL: ${HTML_COUNT} ManyChat pages generated"
+
+      - name: 🔗 Ping Google Sitemaps (index)
+        run: |
+          SITEMAP_URL="https://bot.yourdomain.com/output/sitemap-manychat-1.xml"
+          echo "📡 Pinging Google: https://www.google.com/ping?sitemap=${SITEMAP_URL}"
+          curl -s -m 10 -I "https://www.google.com/ping?sitemap=${SITEMAP_URL}" || true
+
+          SITEMAP_URL="https://bot.yourdomain.com/output/sitemap-manychat-1.xml"
+          echo "📡 Pinging Bing: https://www.bing.com/ping?sitemap=${SITEMAP_URL}"
+          curl -s -m 10 "https://www.bing.com/ping?sitemap=${SITEMAP_URL}" || true
+
+      - name: 🎉 Final success report
+        run: |
+          HTML_COUNT=$(find ./output/manychat -name "*.html" 2>/dev/null | wc -l || echo 0)
+          SITEMAP_COUNT=$(find ./output -name "sitemap-*.xml" 2>/dev/null | wc -l || echo 0)
+
+          echo ""
+          echo "=================================="
+          echo "✅ MANYCHAT 240K + SOCIAL FEEDERS READY"
+          echo "📊 ${HTML_COUNT} ManyChat pages"
+          echo "🗺️  ${SITEMAP_COUNT} sitemap files"
+          echo "🗂️  Pages: ./output/manychat/"
+          echo "📄 Social: ./output/social-ready-*.txt"
+          echo "🚀 Index: ./output/sitemap-manychat-1.xml"
+          echo "=================================="
