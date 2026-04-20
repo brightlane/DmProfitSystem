@@ -2,9 +2,8 @@ name: ManyChat 240K + Social Feeders Daily
 
 on:
   schedule:
-    # 3 AM UTC = 11 PM EDT
     - cron: '0 3 * * *'
-  workflow_dispatch:  # manual run button in GitHub UI
+  workflow_dispatch:
   push:
     branches: [ main ]
 
@@ -26,8 +25,8 @@ jobs:
       - name: 📦 Install dependencies
         run: npm install
 
-      - name: 🚀 Run ManyChat + Social Feeders
-        run: npm run feeders
+      - name: 🚀 Run ManyChat + Social Feeders (using npm run start)
+        run: npm run start
         env:
           NODE_OPTIONS: --max-old-space-size=4096
 
@@ -44,7 +43,7 @@ jobs:
 
           echo "📄 Social files:"
           find ./output -name "social-ready-*.txt" -exec cat {} \;
-          
+
           HTML_COUNT=$(find ./output/manychat -name "*.html" 2>/dev/null | wc -l || echo 0)
           echo "✅ TOTAL: ${HTML_COUNT} ManyChat pages generated"
 
@@ -61,14 +60,4 @@ jobs:
       - name: 🎉 Final success report
         run: |
           HTML_COUNT=$(find ./output/manychat -name "*.html" 2>/dev/null | wc -l || echo 0)
-          SITEMAP_COUNT=$(find ./output -name "sitemap-*.xml" 2>/dev/null | wc -l || echo 0)
-
-          echo ""
-          echo "=================================="
-          echo "✅ MANYCHAT 240K + SOCIAL FEEDERS READY"
-          echo "📊 ${HTML_COUNT} ManyChat pages"
-          echo "🗺️  ${SITEMAP_COUNT} sitemap files"
-          echo "🗂️  Pages: ./output/manychat/"
-          echo "📄 Social: ./output/social-ready-*.txt"
-          echo "🚀 Index: ./output/sitemap-manychat-1.xml"
-          echo "=================================="
+          SITEMAP_COUNT=$(find ./output -name "sitemap-*.xml" 2>/dev/null 
