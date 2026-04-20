@@ -10,3 +10,8 @@
   "author": "Benny \"Palmo Kid\" Palmarino",
   "license": "MIT"
 }
+{
+  "scripts": {
+    "feeders": "node output/index.js"
+  }
+}
