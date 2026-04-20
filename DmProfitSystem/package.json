@@ -1,17 +1,9 @@
 {
   "name": "dmprofitsystem",
   "version": "1.0.0",
-  "description": "ManyChat feeder system",
-  "main": "output/index.js",
-  "scripts": {
-    "feeders": "node output/index.js"
-  },
-  "dependencies": {}
-}
-{
-  "name": "dmprofitsystem",
-  "version": "1.0.0",
+  "main": "index.js",
   "scripts": {
     "feeders": "node scripts/feeders.js"
-  }
+  },
+  "dependencies": {}
 }
