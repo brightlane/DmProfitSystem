@@ -1,0 +1,172 @@
+{
+  "flow": {
+    "id": "manychat-lead-gift-empire",
+    "name": "ManyChat Empire Lead Gift (240K Pages)",
+    "type": "regular",
+    "local": "en",
+    "timezone": "Universal",
+    "status": "active",
+    "keyword_detection": true,
+    "auto_cloud_sync": true,
+    "is_default": false,
+    "is_enabled": true,
+    "needs_review": false
+  },
+  "app_data": {},
+  "flow_designer": {
+    "is_enabled": true
+  },
+  "entry_points": [
+    {
+      "id": "ep-global-landing",
+      "name": "Global Landing Entry",
+      "type": "default",
+      "triggers": [
+        {
+          "type": "keyword",
+          "value": [
+            "manychat empire",
+            "affiliate",
+            "free gift",
+            "bot"
+          ],
+          "ignore_case": true,
+          "is_enabled": true
+        },
+        {
+          "type": "keyword",
+          "value": [
+            "free",
+            "download"
+          ],
+          "is_enabled": true
+        }
+      ],
+      "is_enabled": true
+    }
+  ],
+  "blocks": [
+    {
+      "id": "welcome-empire",
+      "name": "Welcome + Lead Hook",
+      "type": "sequence",
+      "delay": 0,
+      "is_enabled": true,
+      "actions": [
+        {
+          "type": "send_message",
+          "delay": 0,
+          "subtype": "text",
+          "text": "🚀 Hey {contact.firstName}! 👋\n\nYou came from the **ManyChat Empire** pages — excited to see you here!\n\nLet’s get you a **free cash‑tool or funnel sheet** that matches your niche.",
+          "buttons": []
+        },
+        {
+          "type": "go_to_block",
+          "block_id": "ask-niche"
+        }
+      ]
+    },
+    {
+      "id": "ask-niche",
+      "name": "Ask Niche",
+      "type": "user_input",
+      "is_enabled": true,
+      "input_type": "quick_reply",
+      "input_data": {
+        "question": "Which niche do you promote mostly?",
+        "buttons": [
+          {
+            "title": "Money / Cash‑tools",
+            "value": "money"
+          },
+          {
+            "title": "TikTok / Social",
+            "value": "social"
+          },
+          {
+            "title": "Travel / Flights",
+            "value": "travel"
+          },
+          {
+            "title": "SaaS / Tools",
+            "value": "saas"
+          },
+          {
+            "title": "Other (tell me)",
+            "value": "other"
+          }
+        ],
+        "next_action": {
+          "type": "set_attribute",
+          "name": "niche",
+          "value": "{value}"
+        },
+        "on_answer": "ask-email"
+      }
+    },
+    {
+      "id": "ask-email",
+      "name": "Ask Email",
+      "type": "user_input",
+      "is_enabled": true,
+      "input_type": "email",
+      "input_data": {
+        "question": "Nice! Now drop your email so I can send your free gift:",
+        "next_action": {
+          "type": "set_attribute",
+          "name": "email",
+          "value": "{value}"
+        },
+        "on_answer": "send-gift-message"
+      }
+    },
+    {
+      "id": "send-gift-message",
+      "name": "Send Gift Link",
+      "type": "sequence",
+      "is_enabled": true,
+      "actions": [
+        {
+          "type": "send_message",
+          "delay": 0,
+          "subtype": "text",
+          "text": "✅ Done! I’ve saved your details.\n\nHere’s your **ManyChat Empie free gift** based on your niche:\n\n🎁 {contact.niche | default: \"cash‑tool\"}\n\n👉 {gift.url | default: \"https://bot.yourdomain.com/gift\"}\n\nClick the link and start using it in your funnels. If you want, I can also send you a tip every week inside Messenger!",
+          "buttons": [
+            {
+              "type": "url",
+              "title": "Open Gift Link",
+              "value": "{gift.url | default: \"https://bot.yourdomain.com/gift\"}"
+            }
+          ]
+        },
+        {
+          "type": "wait",
+          "delay": 10,
+          "time_unit": "seconds"
+        },
+        {
+          "type": "send_message",
+          "delay": 0,
+          "subtype": "text",
+          "text": "📬 Want weekly ManyChat + traffic tips?\n\nReply with:\n\n✅ YES → I want tips\n\n✅ NO → That’s all for now",
+          "buttons": [
+            {
+              "type": "reply",
+              "title": "✅ YES",
+              "block_id": "subscribe-tips"
+            },
+            {
+              "type": "reply",
+              "title": "✅ NO",
+              "block_id": "end-flow"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "subscribe-tips",
+      "name": "Subscribe to Tips",
+      "type": "sequence",
+      "is_enabled": true,
+      "actions"
