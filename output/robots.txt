@@ -1,0 +1,10 @@
+User-agent: *
+Disallow: /tmp/
+Disallow: /assets/
+Disallow: /scripts/
+
+Allow: /manychat/*.html
+Allow: /sitemap-*.xml
+Allow: /sitemap-manychat-*.xml
+
+Sitemap: https://bot.yourdomain.com/output/sitemap-manychat-1.xml
