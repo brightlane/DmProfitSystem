@@ -23,3 +23,4 @@ git commit -m "add feeders script and manychat-feeders-daily.js"
 
 # 4. Push to main (not gh-pages, not dev)
 git push origin main
+ 
