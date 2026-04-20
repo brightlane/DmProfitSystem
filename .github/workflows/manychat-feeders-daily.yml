@@ -1,63 +1,8 @@
-name: ManyChat Feeders System
-
-on:
-  push:
-  workflow_dispatch:
-
-jobs:
-  generate-manychat-feeders:
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: 20
-
-      - name: Install dependencies
-        run: npm install
-
-      # =========================
-      # RUN FEEDERS SCRIPT SAFELY
-      # =========================
-      - name: Run feeders (safe check)
-        run: |
-          if npm run | grep -q "feeders"; then
-            echo "Running feeders script..."
-            npm run feeders
-          else
-            echo "ERROR: Missing 'feeders' script in package.json"
-            exit 1
-          fi
-
-      # =========================
-      # COUNT HTML FILES (FIXED)
-      # =========================
-      - name: Count generated HTML files
-        run: |
-          set -e
-
-          DIR="./output/manychat"
-          COUNT=0
-
-          if [ -d "$DIR" ]; then
-            COUNT=$(find "$DIR" -type f -name "*.html" 2>/dev/null | wc -l)
-          fi
-
-          COUNT=${COUNT:-0}
-
-          echo "=================================="
-          echo "HTML files generated: $COUNT"
-          echo "Directory: $DIR"
-          echo "=================================="
-
-      # =========================
-      # OPTIONAL DEBUG STEP
-      # =========================
-      - name: Debug file structure
-        run: |
-          echo "Listing output folder:"
-          ls -R ./output || echo "No output folder found"
+{
+  "name": "dmprofitsystem",
+  "version": "1.0.0",
+  "main": "output/index.js",
+  "scripts": {
+    "feeders": "node output/index.js"
+  }
+}
