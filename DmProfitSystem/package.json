@@ -8,3 +8,10 @@
   },
   "dependencies": {}
 }
+{
+  "name": "dmprofitsystem",
+  "version": "1.0.0",
+  "scripts": {
+    "feeders": "node scripts/feeders.js"
+  }
+}
