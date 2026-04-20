@@ -10,17 +10,3 @@
   "author": "Benny \"Palmo Kid\" Palmarino",
   "license": "MIT"
 }
-cd /path/to/DmProfitSystem
-
-# 1. Make sure both files are committed
-git add package.json manychat-feeders-daily.js
-
-# 2. If you have package-lock.json, commit that too
-git add package-lock.json
-
-# 3. Create a new commit
-git commit -m "add feeders script and manychat-feeders-daily.js"
-
-# 4. Push to main (not gh-pages, not dev)
-git push origin main
- 
