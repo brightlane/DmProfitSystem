@@ -1,63 +1,63 @@
-name: ManyChat 240K + Social Feeders Daily
+name: ManyChat Feeders System
 
 on:
-  schedule:
-    - cron: '0 3 * * *'
-  workflow_dispatch:
   push:
-    branches: [ main ]
+  workflow_dispatch:
 
 jobs:
   generate-manychat-feeders:
     runs-on: ubuntu-latest
-    timeout-minutes: 20
 
     steps:
-      - name: 🔍 Checkout repository
+      - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: ⚙️ Setup Node.js 20
+      - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '20'
-          cache: npm
+          node-version: 20
 
-      - name: 📦 Install dependencies
+      - name: Install dependencies
         run: npm install
 
-      - name: 🚀 Run ManyChat + Social Feeders (using npm run start)
-        run: npm run start
-        env:
-          NODE_OPTIONS: --max-old-space-size=4096
-
-      - name: ✅ Verify output
+      # =========================
+      # RUN FEEDERS SCRIPT SAFELY
+      # =========================
+      - name: Run feeders (safe check)
         run: |
-          echo "📁 Files in ./output"
-          ls -la ./output || true
+          if npm run | grep -q "feeders"; then
+            echo "Running feeders script..."
+            npm run feeders
+          else
+            echo "ERROR: Missing 'feeders' script in package.json"
+            exit 1
+          fi
 
-          echo "📄 HTML page count:"
-          find ./output/manychat -name "*.html" 2>/dev/null | wc -l | tr -d ' '
-
-          echo "📄 Sitemap count:"
-          find ./output -name "sitemap-*.xml" 2>/dev/null | wc -l | tr -d ' '
-
-          echo "📄 Social files:"
-          find ./output -name "social-ready-*.txt" -exec cat {} \;
-
-          HTML_COUNT=$(find ./output/manychat -name "*.html" 2>/dev/null | wc -l || echo 0)
-          echo "✅ TOTAL: ${HTML_COUNT} ManyChat pages generated"
-
-      - name: 🔗 Ping Google Sitemaps (index)
+      # =========================
+      # COUNT HTML FILES (FIXED)
+      # =========================
+      - name: Count generated HTML files
         run: |
-          SITEMAP_URL="https://bot.yourdomain.com/output/sitemap-manychat-1.xml"
-          echo "📡 Pinging Google: https://www.google.com/ping?sitemap=${SITEMAP_URL}"
-          curl -s -m 10 -I "https://www.google.com/ping?sitemap=${SITEMAP_URL}" || true
+          set -e
 
-          SITEMAP_URL="https://bot.yourdomain.com/output/sitemap-manychat-1.xml"
-          echo "📡 Pinging Bing: https://www.bing.com/ping?sitemap=${SITEMAP_URL}"
-          curl -s -m 10 "https://www.bing.com/ping?sitemap=${SITEMAP_URL}" || true
+          DIR="./output/manychat"
+          COUNT=0
 
-      - name: 🎉 Final success report
+          if [ -d "$DIR" ]; then
+            COUNT=$(find "$DIR" -type f -name "*.html" 2>/dev/null | wc -l)
+          fi
+
+          COUNT=${COUNT:-0}
+
+          echo "=================================="
+          echo "HTML files generated: $COUNT"
+          echo "Directory: $DIR"
+          echo "=================================="
+
+      # =========================
+      # OPTIONAL DEBUG STEP
+      # =========================
+      - name: Debug file structure
         run: |
-          HTML_COUNT=$(find ./output/manychat -name "*.html" 2>/dev/null | wc -l || echo 0)
-          SITEMAP_COUNT=$(find ./output -name "sitemap-*.xml" 2>/dev/null 
+          echo "Listing output folder:"
+          ls -R ./output || echo "No output folder found"
